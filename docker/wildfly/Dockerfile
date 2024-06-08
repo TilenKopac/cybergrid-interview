@@ -1,6 +1,6 @@
 FROM redhat/ubi9-minimal
 
-ENV WILDFLY_VERSION=32.0.1.Final
+ENV WILDFLY_VERSION=27.0.1.Final
 ENV WILDFLY_USER=cybergrid
 ENV WILDFLY_PASSWORD=password123
 
@@ -26,4 +26,7 @@ USER wildfly
 # copy relevant content
 COPY --chown=wildfly ./startup.sh /home/wildfly/startup.sh
 
-ENTRYPOINT ["/home/wildfly/startup.sh"]
+# ensure signals are forwarded to the JVM process correctly for graceful shutdown
+ENV LAUNCH_JBOSS_IN_BACKGROUND true
+
+ENTRYPOINT exec /home/wildfly/startup.sh

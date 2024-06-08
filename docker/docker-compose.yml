@@ -1,4 +1,10 @@
 services:
+  postgres:
+    image: postgres
+    build:
+      context: ./postgres
+    ports:
+      - "5432:5432"
   wildfly:
     image: wildfly
     build:
@@ -7,3 +13,5 @@ services:
       - "8080:8080"
       - "8787:8787"
       - "9990:9990"
+    depends_on:
+      - postgres
