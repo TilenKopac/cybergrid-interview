@@ -25,6 +25,17 @@
                         <username>cybergrid</username>
                         <password>password123</password>
                         <skip>true</skip>
+                        <targetDir>${artifactOutputDirectory}</targetDir>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>3.4.0</version>
+                    <configuration>
+                        <outputDirectory>${artifactOutputDirectory}</outputDirectory>
+                        <failOnMissingWebXml>false</failOnMissingWebXml>
                     </configuration>
                 </plugin>
             </plugins>
