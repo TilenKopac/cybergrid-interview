@@ -21,7 +21,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
     /**
      * Finds products matching given name, minimum/maximum price and description. Name and description matching is
      * case-insensitive and non-exact (given name and description can be a substring of full product name and
-     * description). Null parameters will be ignored and will not be included in the query.
+     * description). Empty parameters will be ignored and will not be included in the query.
      */
     @Override
     public List<Product> findByNamePriceAndDescription(final String name,
