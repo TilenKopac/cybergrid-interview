@@ -1,4 +1,4 @@
-FROM postgres:16
+FROM postgres:11
 
 ENV POSTGRES_PASSWORD=postgres
 ENV POSTGRES_DB=postgres

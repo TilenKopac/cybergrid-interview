@@ -1,0 +1,53 @@
+package tk.cybergrid.service.product.impl.controller;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+import org.apache.commons.lang3.StringUtils;
+import tk.cybergrid.service.product.impl.model.Product;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Override
+    public List<Product> findByNamePriceAndDescription(final String name, final BigDecimal minPrice, final BigDecimal maxPrice, final String description) {
+        // prepare query base
+        final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<Product> query = criteriaBuilder.createQuery(Product.class);
+        final Root<Product> product = query.from(Product.class);
+        final List<Predicate> predicates = new ArrayList<>();
+
+        // add name predicate
+        if (StringUtils.isNotBlank(name)) {
+            predicates.add(criteriaBuilder.like(criteriaBuilder.lower(product.get("name")), "%" + name.toLowerCase() + "%"));
+        }
+
+        // add price predicates
+        if (minPrice != null) {
+            predicates.add(criteriaBuilder.greaterThanOrEqualTo(product.get("price"), minPrice));
+        }
+        if (maxPrice != null) {
+            predicates.add(criteriaBuilder.lessThanOrEqualTo(product.get("price"), maxPrice));
+        }
+
+        // add description predicates
+        if (StringUtils.isNotBlank(description)) {
+            predicates.add(criteriaBuilder.like(criteriaBuilder.lower(product.get("description")), "%" + description.toLowerCase() + "%"));
+        }
+
+        query.select(product)
+                .where(predicates.toArray(new Predicate[predicates.size()]));
+
+        return entityManager.createQuery(query).getResultList();
+    }
+
+}

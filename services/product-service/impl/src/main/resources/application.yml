@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: cybergrid-interview-product-service
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+  flyway:
+    locations: classpath:/db/migrations
+    schemas: cybergrid_interview
+    baselineOnMigrate: true
+    enabled: true
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://postgres:5432/postgres?currentSchema=cybergrid_interview
+    username: postgres
+    password: postgres

@@ -1,11 +1,13 @@
 services:
   postgres:
+    container_name: postgres
     image: postgres
     build:
       context: ./postgres
     ports:
       - "5432:5432"
   wildfly:
+    container_name: wildfly
     image: wildfly
     build:
       context: ./wildfly

@@ -25,6 +25,7 @@ USER wildfly
 
 # copy relevant content
 COPY --chown=wildfly ./startup.sh /home/wildfly/startup.sh
+COPY --chown=wildfly ./standalone.conf /opt/wildfly/bin
 
 # ensure signals are forwarded to the JVM process correctly for graceful shutdown
 ENV LAUNCH_JBOSS_IN_BACKGROUND true
