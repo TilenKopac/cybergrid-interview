@@ -18,8 +18,16 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
     @PersistenceContext
     private EntityManager entityManager;
 
+    /**
+     * Finds products matching given name, minimum/maximum price and description. Name and description matching is
+     * case-insensitive and non-exact (given name and description can be a substring of full product name and
+     * description). Null parameters will be ignored and will not be included in the query.
+     */
     @Override
-    public List<Product> findByNamePriceAndDescription(final String name, final BigDecimal minPrice, final BigDecimal maxPrice, final String description) {
+    public List<Product> findByNamePriceAndDescription(final String name,
+                                                       final BigDecimal minPrice,
+                                                       final BigDecimal maxPrice,
+                                                       final String description) {
         // prepare query base
         final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         final CriteriaQuery<Product> query = criteriaBuilder.createQuery(Product.class);
@@ -28,20 +36,22 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 
         // add name predicate
         if (StringUtils.isNotBlank(name)) {
-            predicates.add(criteriaBuilder.like(criteriaBuilder.lower(product.get("name")), "%" + name.toLowerCase() + "%"));
+            predicates.add(criteriaBuilder.like(criteriaBuilder.lower(product.get(Product.COLUMN_NAME_NAME)),
+                    "%" + name.toLowerCase() + "%"));
         }
 
         // add price predicates
         if (minPrice != null) {
-            predicates.add(criteriaBuilder.greaterThanOrEqualTo(product.get("price"), minPrice));
+            predicates.add(criteriaBuilder.greaterThanOrEqualTo(product.get(Product.COLUMN_NAME_PRICE), minPrice));
         }
         if (maxPrice != null) {
-            predicates.add(criteriaBuilder.lessThanOrEqualTo(product.get("price"), maxPrice));
+            predicates.add(criteriaBuilder.lessThanOrEqualTo(product.get(Product.COLUMN_NAME_PRICE), maxPrice));
         }
 
         // add description predicates
         if (StringUtils.isNotBlank(description)) {
-            predicates.add(criteriaBuilder.like(criteriaBuilder.lower(product.get("description")), "%" + description.toLowerCase() + "%"));
+            predicates.add(criteriaBuilder.like(criteriaBuilder.lower(product.get(Product.COLUMN_NAME_DESCRIPTION)),
+                    "%" + description.toLowerCase() + "%"));
         }
 
         query.select(product)

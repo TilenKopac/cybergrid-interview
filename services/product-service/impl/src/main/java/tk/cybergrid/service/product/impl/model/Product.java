@@ -15,17 +15,21 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Product {
 
+    public static final String COLUMN_NAME_NAME = "name";
+    public static final String COLUMN_NAME_PRICE = "price";
+    public static final String COLUMN_NAME_DESCRIPTION = "description";
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "name", length = 50, nullable = false)
+    @Column(name = COLUMN_NAME_NAME, length = 50, nullable = false)
     private String name;
 
-    @Column(name = "price", nullable = false)
+    @Column(name = COLUMN_NAME_PRICE, nullable = false)
     private BigDecimal price;
 
-    @Column(name = "description")
+    @Column(name = COLUMN_NAME_DESCRIPTION)
     private String description;
 
 }

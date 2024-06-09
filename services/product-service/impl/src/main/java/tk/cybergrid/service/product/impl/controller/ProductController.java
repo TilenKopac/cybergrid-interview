@@ -1,5 +1,6 @@
 package tk.cybergrid.service.product.impl.controller;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
+@AllArgsConstructor
 public class ProductController {
 
     @Autowired
@@ -20,7 +22,12 @@ public class ProductController {
     @GetMapping("/{id}")
     public Product getProductById(@PathVariable(name = "id") final UUID id) {
         final Optional<Product> productOptional = productRepository.findById(id);
-        return productOptional.orElse(null);
+        if (productOptional.isEmpty()) {
+            // product was not found, return 404
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        }
+
+        return productOptional.get();
     }
 
     @GetMapping("/")
