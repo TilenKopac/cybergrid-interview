@@ -25,9 +25,9 @@ After docker initialization is completed, the local environment and the applicat
 The application exposes a simple REST API for manipulation of Product objects, locally available at the URL
 http://localhost:8080/services/product. Some example data is already filled into the database deploy-time using Flyway 
 migrations. The API defines the following endpoints:
-* [GET /{id}](http://localhost:8080/services/product/33458aac-211a-4151-885a-fe8c9947cfe1) - returns the product matching
+* [GET /{id}](http://localhost:8080/services/product/4a7d408f-fb68-4fef-9504-7b03641e51c2) - returns the product matching
   the given id. Returns status 404 if product for given id is not found.
-* [GET /](http://localhost:8080/services/product?min_price=10.00&max_price=1000&name=example&description=example%20product) -
+* [GET /](http://localhost:8080/services/product?min_price=10.00&max_price=30&name=shoe&description=sport) -
   returns all products matching given parameters `name`, `min_price`, `max_price` and `description`. Matching is 
   case-insensitive and non-exact.
 * POST / - creates a new product based on the request body, auto-generating a UUID for its id.
@@ -50,3 +50,5 @@ Some potential next steps of this project are:
 * Separate flyway migrations into profiles, to allow using different profiles for different deployment/use-cases. For example,
   example data is beneficial for local development, but it should not be generated on production environments. On the
   other hand, we need database definition migrations everywhere.
+* Mavenize docker directory to automatically transfer the newest application package to wildfly folder at project 
+  build-time to be copied to Wildfly's deployments folder when its image is built.
